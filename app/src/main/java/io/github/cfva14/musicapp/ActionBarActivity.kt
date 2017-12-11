@@ -18,7 +18,7 @@ import io.github.cfva14.musicapp.home.HomeActivity
 
 
 /**
- * Created by Carlos Vlencia on 12/10/17.
+ * Created by Carlos Valencia on 12/10/17.
  */
 
 abstract class ActionBarActivity : AppCompatActivity() {

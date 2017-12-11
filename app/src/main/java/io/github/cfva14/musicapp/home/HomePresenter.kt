@@ -1,9 +1,9 @@
 package io.github.cfva14.musicapp.home
 
-import android.util.Log
+import io.github.cfva14.musicapp.data.Artist
 
 /**
- * Created by Carlos Vlencia on 12/10/17.
+ * Created by Carlos Valencia on 12/10/17.
  */
 
 class HomePresenter(
@@ -17,6 +17,10 @@ class HomePresenter(
     }
 
     override fun start() {
-        Log.e("HOME_PRESENTER", "start()")
+
+    }
+
+    override fun openArtistUI(requestedArtist: Artist) {
+        homeView.showArtistUI("-KvmdhXYBaYk3RCvXRtZ")
     }
 }

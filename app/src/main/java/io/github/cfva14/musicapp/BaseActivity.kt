@@ -2,10 +2,6 @@ package io.github.cfva14.musicapp
 
 import android.view.View
 import android.widget.ProgressBar
-import android.app.ProgressDialog
-import android.support.annotation.VisibleForTesting
-
-
 
 /**
  * Created by Carlos Valencia on 12/10/17.
@@ -28,7 +24,7 @@ abstract class BaseActivity : ActionBarActivity() {
 
     override fun onStop() {
         super.onStop()
-        progressBar!!.visibility = View.GONE
+        setProgressBar(false)
     }
 }
 
