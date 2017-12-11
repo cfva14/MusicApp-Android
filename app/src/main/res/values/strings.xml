@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MusicApp</string>
+
+    <string name="drawer_home_title">Home</string>
+
+    <string name="open_content_drawer">Open</string>
+    <string name="close_content_drawer">Close</string>
+</resources>
