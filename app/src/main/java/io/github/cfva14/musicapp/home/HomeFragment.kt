@@ -3,6 +3,7 @@ package io.github.cfva14.musicapp.home
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun setLoadingIndicator(active: Boolean) {
-       parent.setProgressBar(active)
+        Log.e("HOME_FRAGMENT", active.toString())
     }
 
     override fun showArtistUI(artistId: String) {

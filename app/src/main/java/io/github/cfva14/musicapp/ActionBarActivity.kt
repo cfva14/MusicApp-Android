@@ -113,7 +113,7 @@ abstract class ActionBarActivity : AppCompatActivity() {
             val navigationView: NavigationView = findViewById(R.id.nav_view)
             if (navigationView == null) throw IllegalStateException("Layout requires a NavigationView with id 'nav_view'")
             drawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_content_drawer, R.string.close_content_drawer)
-            drawerLayout.setDrawerListener(drawerListener)
+            drawerLayout.addDrawerListener(drawerListener)
             populateDrawerItems(navigationView)
             setSupportActionBar(toolbar)
             updateDrawerToggle()
@@ -130,7 +130,7 @@ abstract class ActionBarActivity : AppCompatActivity() {
             drawerLayout.closeDrawers()
             true
         }
-        if (HomeActivity::class.java!!.isAssignableFrom(javaClass)) {
+        if (HomeActivity::class.java.isAssignableFrom(javaClass)) {
             navigationView.setCheckedItem(R.id.navigation_home)
         }
     }
@@ -138,13 +138,12 @@ abstract class ActionBarActivity : AppCompatActivity() {
     protected fun updateDrawerToggle() {
         if (drawerToggle == null) return
 
-        drawerToggle.setDrawerIndicatorEnabled(true)
+        drawerToggle.isDrawerIndicatorEnabled = true
         if (supportActionBar != null) {
-            supportActionBar!!.setDisplayShowHomeEnabled(!true)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(!true)
-            supportActionBar!!.setHomeButtonEnabled(!true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setHomeButtonEnabled(true)
         }
         drawerToggle.syncState()
     }
-
 }
