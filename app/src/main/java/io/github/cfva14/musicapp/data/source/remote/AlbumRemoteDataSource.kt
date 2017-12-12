@@ -1,10 +1,8 @@
 package io.github.cfva14.musicapp.data.source.remote
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import io.github.cfva14.musicapp.data.Album
+import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.data.source.AlbumDataSource
 
 /**
@@ -16,7 +14,6 @@ object AlbumRemoteDataSource : AlbumDataSource {
     private val databaseRef = FirebaseDatabase.getInstance().reference
 
     override fun getAlbum(albumId: String, callback: AlbumDataSource.GetAlbumCallback) {
-
         val albumRef = databaseRef.child("album/" + albumId)
 
         val albumListener = object : ValueEventListener {
@@ -31,5 +28,25 @@ object AlbumRemoteDataSource : AlbumDataSource {
         }
 
         albumRef.addListenerForSingleValueEvent(albumListener)
+    }
+
+    override fun getTracks(albumId: String, callback: AlbumDataSource.GetTracksCallback) {
+        val trackRef = databaseRef.child("track").orderByChild("albumId").equalTo(albumId)
+
+        val trackListener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                callback.onDataNotAvailable()
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                val tracks: MutableList<Track> = ArrayList()
+                p0?.children?.forEach {
+                    tracks.add(it.getValue(Track::class.java)!!)
+                }
+                callback.onTracksLoaded(tracks)
+            }
+        }
+
+        trackRef.addListenerForSingleValueEvent(trackListener)
     }
 }

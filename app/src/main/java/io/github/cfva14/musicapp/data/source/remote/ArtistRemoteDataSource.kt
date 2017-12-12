@@ -1,6 +1,5 @@
 package io.github.cfva14.musicapp.data.source.remote
 
-import android.util.Log
 import com.google.firebase.database.*
 import io.github.cfva14.musicapp.data.Artist
 import io.github.cfva14.musicapp.data.source.ArtistDataSource
@@ -19,7 +18,6 @@ object ArtistRemoteDataSource : ArtistDataSource {
     private val databaseRef = FirebaseDatabase.getInstance().reference
 
     override fun getArtist(artistId: String, callback: ArtistDataSource.GetArtistCallback) {
-
         val artistRef = databaseRef.child("artist/" + artistId)
 
         val artistListener = object : ValueEventListener {
@@ -37,23 +35,18 @@ object ArtistRemoteDataSource : ArtistDataSource {
     }
 
     override fun getAlbums(artistId: String, callback: ArtistDataSource.GetAlbumsCallback) {
-
-        val albumRef = databaseRef.child("album")
-        Log.e("AL", albumRef.toString())
+        val albumRef = databaseRef.child("album").orderByChild("artistId").equalTo(artistId)
 
         val albumListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-                Log.e("AL", "NO")
                 callback.onDataNotAvailable()
             }
 
             override fun onDataChange(p0: DataSnapshot?) {
                 val albums: MutableList<Album> = ArrayList()
                 p0?.children?.forEach {
-                    Log.e("AL", it.toString())
                     albums.add(it.getValue(Album::class.java)!!)
                 }
-
                 callback.onAlbumsLoaded(albums)
             }
         }

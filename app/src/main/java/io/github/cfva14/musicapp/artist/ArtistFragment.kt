@@ -24,20 +24,19 @@ import io.github.cfva14.musicapp.data.Artist
  */
 class ArtistFragment : Fragment(), ArtistContract.View {
 
-    override lateinit var presenter: ArtistContract.Presenter
-
     private lateinit var artistImage: ImageView
     private lateinit var recyclerAlbum: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
     private lateinit var horizontalLayoutManager: RecyclerView.LayoutManager
+
+    override lateinit var presenter: ArtistContract.Presenter
+    private val parent: ArtistActivity = ArtistActivity()
 
     private var albumListener: AlbumItemListener = object : AlbumItemListener {
         override fun onAlbumClick(clickedAlbum: Album) {
             presenter.openAlbumUI(clickedAlbum)
         }
     }
-
-    private val parent: ArtistActivity = ArtistActivity()
 
     override fun onResume() {
         super.onResume()

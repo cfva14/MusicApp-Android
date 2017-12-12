@@ -31,6 +31,7 @@ class ArtistPresenter(
         }
 
         artistView.setLoadingIndicator(true)
+
         artistRepository.getArtist(artistId, object : ArtistDataSource.GetArtistCallback {
             override fun onArtistLoaded(artist: Artist) {
                 with(artistView) {

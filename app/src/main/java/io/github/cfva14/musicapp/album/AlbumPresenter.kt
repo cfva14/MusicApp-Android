@@ -1,6 +1,7 @@
 package io.github.cfva14.musicapp.album
 
 import io.github.cfva14.musicapp.data.Album
+import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.data.source.AlbumDataSource
 import io.github.cfva14.musicapp.data.source.AlbumRepository
 
@@ -31,17 +32,32 @@ class AlbumPresenter(
         }
 
         albumView.setLoadingIndicator(true)
+
         albumRepository.getAlbum(albumId, object : AlbumDataSource.GetAlbumCallback {
             override fun onAlbumLoaded(album: Album) {
                 with(albumView) {
                     setLoadingIndicator(false)
-                    showTitle(album.name)
+                    showAlbum(album)
                 }
             }
 
             override fun onDataNotAvailable() {
                 with(albumView) {
                     showMissingAlbum()
+                }
+            }
+        })
+
+        albumRepository.getTracks(albumId, object : AlbumDataSource.GetTracksCallback {
+            override fun onTracksLoaded(tracks: List<Track>) {
+                with(albumView) {
+                    showTracks(tracks)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                with(albumView) {
+                    showMissingTracks()
                 }
             }
         })

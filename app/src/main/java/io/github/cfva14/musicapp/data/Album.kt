@@ -7,5 +7,6 @@ package io.github.cfva14.musicapp.data
 data class Album(
         val id: String = "",
         val name: String = "",
-        val imageUrl: String = ""
+        val imageUrl: String = "",
+        val artistName: String = ""
 )
