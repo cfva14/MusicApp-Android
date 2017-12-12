@@ -1,5 +1,6 @@
 package io.github.cfva14.musicapp.data.source
 
+import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Artist
 
 /**
@@ -14,6 +15,18 @@ class ArtistRepository(
         artistRemoteDataSource.getArtist(artistId, object : ArtistDataSource.GetArtistCallback {
             override fun onArtistLoaded(artist: Artist) {
                 callback.onArtistLoaded(artist)
+            }
+
+            override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
+            }
+        })
+    }
+
+    override fun getAlbums(artistId: String, callback: ArtistDataSource.GetAlbumsCallback) {
+        artistRemoteDataSource.getAlbums(artistId, object : ArtistDataSource.GetAlbumsCallback {
+            override fun onAlbumsLoaded(albums: List<Album>) {
+                callback.onAlbumsLoaded(albums)
             }
 
             override fun onDataNotAvailable() {

@@ -1,5 +1,6 @@
 package io.github.cfva14.musicapp.artist
 
+import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Artist
 import io.github.cfva14.musicapp.data.source.ArtistDataSource
 import io.github.cfva14.musicapp.data.source.ArtistRepository
@@ -34,7 +35,7 @@ class ArtistPresenter(
             override fun onArtistLoaded(artist: Artist) {
                 with(artistView) {
                     setLoadingIndicator(false)
-                    showTitle(artist.name)
+                    showArtist(artist)
                 }
             }
 
@@ -44,5 +45,25 @@ class ArtistPresenter(
                 }
             }
         })
+
+        artistRepository.getAlbums(artistId, object : ArtistDataSource.GetAlbumsCallback {
+            override fun onAlbumsLoaded(albums: List<Album>) {
+                with(artistView) {
+                    showAlbums(albums)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                with(artistView) {
+                    showMissingAlbums()
+                }
+            }
+        })
+
+
+    }
+
+    override fun openAlbumUI(requestedAlbum: Album) {
+        artistView.showAlbumUI(requestedAlbum)
     }
 }

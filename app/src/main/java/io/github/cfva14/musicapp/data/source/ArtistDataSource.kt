@@ -1,5 +1,6 @@
 package io.github.cfva14.musicapp.data.source
 
+import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Artist
 
 /**
@@ -13,7 +14,13 @@ interface ArtistDataSource {
         fun onDataNotAvailable()
     }
 
+    interface GetAlbumsCallback {
+        fun onAlbumsLoaded(albums: List<Album>)
+        fun onDataNotAvailable()
+    }
+
     fun getArtist(artistId: String, callback: GetArtistCallback)
+    fun getAlbums(artistId: String, callback: GetAlbumsCallback)
 
 
 }
