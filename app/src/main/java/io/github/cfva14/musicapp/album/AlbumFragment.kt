@@ -38,7 +38,7 @@ class AlbumFragment : Fragment(), AlbumContract.View {
 
     private var trackListener: TrackItemListener = object : TrackItemListener {
         override fun onTrackClick(clickedTrack: Track) {
-            //presenter.openAlbumUI(clickedAlbum)
+            Toast.makeText(context, clickedTrack.title, Toast.LENGTH_SHORT).show()
         }
     }
 

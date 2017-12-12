@@ -2,6 +2,7 @@ package io.github.cfva14.musicapp.data.source
 
 import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Artist
+import io.github.cfva14.musicapp.data.Track
 
 /**
  * Created by Carlos Valencia on 12/10/17.
@@ -27,6 +28,18 @@ class ArtistRepository(
         artistRemoteDataSource.getAlbums(artistId, object : ArtistDataSource.GetAlbumsCallback {
             override fun onAlbumsLoaded(albums: List<Album>) {
                 callback.onAlbumsLoaded(albums)
+            }
+
+            override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
+            }
+        })
+    }
+
+    override fun getTracks(artistId: String, callback: ArtistDataSource.GetTracksCallback) {
+        artistRemoteDataSource.getTracks(artistId, object : ArtistDataSource.GetTracksCallback {
+            override fun onTracksLoaded(tracks: List<Track>) {
+                callback.onTracksLoaded(tracks)
             }
 
             override fun onDataNotAvailable() {

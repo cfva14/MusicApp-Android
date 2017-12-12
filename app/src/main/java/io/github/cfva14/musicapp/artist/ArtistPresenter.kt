@@ -2,6 +2,7 @@ package io.github.cfva14.musicapp.artist
 
 import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Artist
+import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.data.source.ArtistDataSource
 import io.github.cfva14.musicapp.data.source.ArtistRepository
 
@@ -57,6 +58,20 @@ class ArtistPresenter(
             override fun onDataNotAvailable() {
                 with(artistView) {
                     showMissingAlbums()
+                }
+            }
+        })
+
+        artistRepository.getTracks(artistId, object : ArtistDataSource.GetTracksCallback {
+            override fun onTracksLoaded(tracks: List<Track>) {
+                with(artistView) {
+                    showTracks(tracks)
+                }
+            }
+
+            override fun onDataNotAvailable() {
+                with(artistView) {
+                    showMissingTracks()
                 }
             }
         })
