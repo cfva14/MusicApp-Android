@@ -19,10 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_track"
+        <LinearLayout
+            android:id="@+id/track_holder"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="330dp" />
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
 
     </LinearLayout>
 

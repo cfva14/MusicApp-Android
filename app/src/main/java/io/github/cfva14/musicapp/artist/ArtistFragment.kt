@@ -9,10 +9,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.squareup.picasso.Picasso
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.album.AlbumActivity
@@ -24,15 +21,14 @@ import io.github.cfva14.musicapp.utils.GenUtils
 /**
  * Created by Carlos Valencia on 12/10/17.
  */
+
 class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClickListener {
 
     private lateinit var artistImage: ImageView
     private lateinit var recyclerAlbum: RecyclerView
-    private lateinit var recyclerTrack: RecyclerView
     private lateinit var albumAdapter: AlbumAdapter
-    private lateinit var trackAdapter: TrackAdapter
     private lateinit var horizontalLayoutManager: RecyclerView.LayoutManager
-    private lateinit var linearLayoutManager: RecyclerView.LayoutManager
+    private lateinit var trackHolder: LinearLayout
 
     private lateinit var selectedTrack: Track
 
@@ -53,11 +49,7 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
             selectedTrack = clickedTrack
             val popUpMenu: PopupMenu
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                popUpMenu = PopupMenu(context, view, Gravity.END)
-            } else {
-                popUpMenu = PopupMenu(context, view)
-            }
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) popUpMenu = PopupMenu(context, view, Gravity.END) else popUpMenu = PopupMenu(context, view)
 
             popUpMenu.setOnMenuItemClickListener(this@ArtistFragment)
             val inflater = popUpMenu.menuInflater
@@ -77,14 +69,11 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
         with(root) {
             artistImage = findViewById(R.id.artist_image)
             recyclerAlbum = findViewById(R.id.recycler_album)
-            recyclerTrack = findViewById(R.id.recycler_track)
+            trackHolder = findViewById(R.id.track_holder)
         }
         horizontalLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        linearLayoutManager = LinearLayoutManager(context)
         recyclerAlbum.layoutManager = horizontalLayoutManager
         recyclerAlbum.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recyclerTrack.layoutManager = linearLayoutManager
-        recyclerTrack.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
         return root
     }
@@ -103,8 +92,20 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
     }
 
     override fun showTracks(tracks: List<Track>) {
-        trackAdapter = TrackAdapter(context!!, tracks, trackListener)
-        recyclerTrack.adapter = trackAdapter
+        trackHolder.removeAllViews()
+
+        for (track in tracks) {
+            val trackLayout = layoutInflater.inflate(R.layout.list_item_track, trackHolder, false)
+
+            Picasso.with(context).load(track.albumImageUrl).into(trackLayout.findViewById<ImageView>(R.id.item_track_image))
+            trackLayout.findViewById<TextView>(R.id.item_track_album).text = track.albumName
+            trackLayout.findViewById<TextView>(R.id.item_track_title).text = track.title
+            trackLayout.findViewById<TextView>(R.id.item_track_duration).text = GenUtils.formatTimer(track.duration)
+            trackLayout.findViewById<ImageView>(R.id.item_track_more).setOnClickListener { trackListener.onMoreClick(track, trackLayout) }
+            trackLayout.setOnClickListener { trackListener.onTrackClick(track) }
+
+            trackHolder.addView(trackLayout)
+        }
     }
 
     override fun showAlbumUI(album: Album) {
@@ -146,45 +147,8 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
         class AlbumHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val albumImage: ImageView = itemView.findViewById(R.id.item_album_image)
             val albumName: TextView = itemView.findViewById(R.id.item_album_name)
-
         }
 
-    }
-
-    private class TrackAdapter(private val context: Context, private val tracks: List<Track>, private val itemListener: TrackItemListener) : RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TrackHolder {
-            val listItem = LayoutInflater.from(parent?.context).inflate(R.layout.list_item_track, parent, false)
-            return TrackHolder(listItem)
-        }
-
-        override fun onBindViewHolder(holder: TrackHolder?, position: Int) {
-            holder?.albumImage?.visibility = View.VISIBLE
-            holder?.number?.visibility = View.GONE
-
-            Picasso.with(context).load(tracks[position].albumImageUrl).into(holder?.albumImage)
-            holder?.albumName?.text = tracks[position].albumName
-            holder?.number?.text = (position + 1).toString()
-            holder?.title?.text = tracks[position].title
-            holder?.duration?.text = GenUtils.formatTimer(tracks[position].duration)
-            holder?.more?.setOnClickListener {
-                itemListener.onMoreClick(tracks[position], holder.itemView)
-            }
-            holder?.itemView?.setOnClickListener {
-                itemListener.onTrackClick(tracks[position])
-            }
-        }
-
-        override fun getItemCount() = tracks.size
-
-        class TrackHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val albumImage: ImageView = itemView.findViewById(R.id.item_track_image)
-            val number: TextView = itemView.findViewById(R.id.item_track_number)
-            val title: TextView = itemView.findViewById(R.id.item_track_title)
-            val albumName: TextView = itemView.findViewById(R.id.item_track_album)
-            val duration: TextView = itemView.findViewById(R.id.item_track_duration)
-            val more: ImageView = itemView.findViewById(R.id.item_track_more)
-        }
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {

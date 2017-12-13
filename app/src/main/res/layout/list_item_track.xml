@@ -19,6 +19,7 @@
         android:layout_height="48dp"
         android:gravity="center"
         android:layout_margin="8dp"
+        android:visibility="gone"
         tools:text="1" />
 
     <LinearLayout
