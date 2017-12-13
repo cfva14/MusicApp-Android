@@ -13,11 +13,11 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import com.squareup.picasso.Picasso
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.utils.GenUtils
+import io.github.cfva14.musicapp.utils.GlideApp
 
 /**
  * Created by Carlos Valencia on 12/11/17.
@@ -85,7 +85,7 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
     }
 
     override fun showAlbum(album: Album) {
-        Picasso.with(context).load(album.imageUrl).into(albumImage)
+        GlideApp.with(context).load(album.imageUrl).into(albumImage)
         albumName.text = album.name
         artistName.text = album.artistName
     }
@@ -114,7 +114,7 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
             holder?.albumImage?.visibility = View.GONE
             holder?.number?.visibility = View.VISIBLE
 
-            Picasso.with(context).load(tracks[position].albumImageUrl).into(holder?.albumImage)
+            GlideApp.with(context).load(tracks[position].albumImageUrl).into(holder?.albumImage)
             holder?.albumName?.text = tracks[position].albumName
             holder?.number?.text = (position + 1).toString()
             holder?.title?.text = tracks[position].title

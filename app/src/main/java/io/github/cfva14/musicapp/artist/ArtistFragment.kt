@@ -10,13 +10,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.*
-import com.squareup.picasso.Picasso
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.album.AlbumActivity
 import io.github.cfva14.musicapp.data.Album
 import io.github.cfva14.musicapp.data.Artist
 import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.utils.GenUtils
+import io.github.cfva14.musicapp.utils.GlideApp
 
 /**
  * Created by Carlos Valencia on 12/10/17.
@@ -83,7 +83,7 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
     }
 
     override fun showArtist(artist: Artist) {
-        Picasso.with(context).load(artist.imageUrl).into(artistImage)
+        GlideApp.with(context).load(artist.imageUrl).into(artistImage)
     }
 
     override fun showAlbums(albums: List<Album>) {
@@ -97,7 +97,7 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
         for (track in tracks) {
             val trackLayout = layoutInflater.inflate(R.layout.list_item_track, trackHolder, false)
 
-            Picasso.with(context).load(track.albumImageUrl).into(trackLayout.findViewById<ImageView>(R.id.item_track_image))
+            GlideApp.with(context).load(track.albumImageUrl).into(trackLayout.findViewById<ImageView>(R.id.item_track_image))
             trackLayout.findViewById<TextView>(R.id.item_track_album).text = track.albumName
             trackLayout.findViewById<TextView>(R.id.item_track_title).text = track.title
             trackLayout.findViewById<TextView>(R.id.item_track_duration).text = GenUtils.formatTimer(track.duration)
@@ -135,7 +135,7 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
         }
 
         override fun onBindViewHolder(holder: AlbumHolder?, position: Int) {
-            Picasso.with(context).load(albums[position].imageUrl).into(holder?.albumImage)
+            GlideApp.with(context).load(albums[position].imageUrl).into(holder?.albumImage)
             holder?.albumName?.text = albums[position].name
             holder?.itemView?.setOnClickListener {
                 itemListener.onAlbumClick(albums[position])
