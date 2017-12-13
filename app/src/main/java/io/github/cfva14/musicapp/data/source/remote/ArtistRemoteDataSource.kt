@@ -67,7 +67,6 @@ object ArtistRemoteDataSource : ArtistDataSource {
             override fun onDataChange(p0: DataSnapshot?) {
                 val tracks: MutableList<Track> = ArrayList()
                 p0?.children?.forEach {
-                    Log.e("REMOTE", it.getValue(Track::class.java)!!.title)
                     tracks.add(it.getValue(Track::class.java)!!)
                 }
                 callback.onTracksLoaded(tracks)

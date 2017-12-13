@@ -2,15 +2,15 @@ package io.github.cfva14.musicapp.artist
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import com.squareup.picasso.Picasso
@@ -24,7 +24,7 @@ import io.github.cfva14.musicapp.utils.GenUtils
 /**
  * Created by Carlos Valencia on 12/10/17.
  */
-class ArtistFragment : Fragment(), ArtistContract.View {
+class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClickListener {
 
     private lateinit var artistImage: ImageView
     private lateinit var recyclerAlbum: RecyclerView
@@ -34,8 +34,9 @@ class ArtistFragment : Fragment(), ArtistContract.View {
     private lateinit var horizontalLayoutManager: RecyclerView.LayoutManager
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
 
+    private lateinit var selectedTrack: Track
+
     override lateinit var presenter: ArtistContract.Presenter
-    private val parent: ArtistActivity = ArtistActivity()
 
     private var albumListener: AlbumItemListener = object : AlbumItemListener {
         override fun onAlbumClick(clickedAlbum: Album) {
@@ -46,6 +47,22 @@ class ArtistFragment : Fragment(), ArtistContract.View {
     private var trackListener: TrackItemListener = object : TrackItemListener {
         override fun onTrackClick(clickedTrack: Track) {
             Toast.makeText(context, clickedTrack.title, Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onMoreClick(clickedTrack: Track, view: View) {
+            selectedTrack = clickedTrack
+            val popUpMenu: PopupMenu
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                popUpMenu = PopupMenu(context, view, Gravity.END)
+            } else {
+                popUpMenu = PopupMenu(context, view)
+            }
+
+            popUpMenu.setOnMenuItemClickListener(this@ArtistFragment)
+            val inflater = popUpMenu.menuInflater
+            inflater.inflate(R.menu.popup_menu_track, popUpMenu.menu)
+            popUpMenu.show()
         }
     }
 
@@ -142,11 +159,17 @@ class ArtistFragment : Fragment(), ArtistContract.View {
         }
 
         override fun onBindViewHolder(holder: TrackHolder?, position: Int) {
+            holder?.albumImage?.visibility = View.VISIBLE
+            holder?.number?.visibility = View.GONE
+
             Picasso.with(context).load(tracks[position].albumImageUrl).into(holder?.albumImage)
             holder?.albumName?.text = tracks[position].albumName
             holder?.number?.text = (position + 1).toString()
             holder?.title?.text = tracks[position].title
             holder?.duration?.text = GenUtils.formatTimer(tracks[position].duration)
+            holder?.more?.setOnClickListener {
+                itemListener.onMoreClick(tracks[position], holder.itemView)
+            }
             holder?.itemView?.setOnClickListener {
                 itemListener.onTrackClick(tracks[position])
             }
@@ -160,8 +183,26 @@ class ArtistFragment : Fragment(), ArtistContract.View {
             val title: TextView = itemView.findViewById(R.id.item_track_title)
             val albumName: TextView = itemView.findViewById(R.id.item_track_album)
             val duration: TextView = itemView.findViewById(R.id.item_track_duration)
+            val more: ImageView = itemView.findViewById(R.id.item_track_more)
         }
+    }
 
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.context_track_play -> {
+                Toast.makeText(context, "Play ${selectedTrack.title}", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.context_track_play_next -> {
+                Toast.makeText(context, "Play ${selectedTrack.title} after current playing song", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.context_track_add_to_playlist -> {
+                Toast.makeText(context, "Add ${selectedTrack.title} to the playlist", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        return false
     }
 
     interface AlbumItemListener {
@@ -170,6 +211,7 @@ class ArtistFragment : Fragment(), ArtistContract.View {
 
     interface TrackItemListener {
         fun onTrackClick(clickedTrack: Track)
+        fun onMoreClick(clickedTrack: Track, view: View)
     }
 
     companion object {
