@@ -1,12 +1,12 @@
 package io.github.cfva14.musicapp.artist
 
 import android.os.Bundle
-import io.github.cfva14.musicapp.BaseActivity
+import io.github.cfva14.musicapp.PlayerActivity
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.utils.Injection
 import io.github.cfva14.musicapp.utils.replaceFragmentInActivity
 
-class ArtistActivity : BaseActivity() {
+class ArtistActivity : PlayerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
