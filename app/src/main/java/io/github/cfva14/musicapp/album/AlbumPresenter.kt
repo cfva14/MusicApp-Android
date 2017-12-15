@@ -1,9 +1,12 @@
 package io.github.cfva14.musicapp.album
 
 import io.github.cfva14.musicapp.data.Album
+import io.github.cfva14.musicapp.data.Playlist
 import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.data.source.AlbumDataSource
 import io.github.cfva14.musicapp.data.source.AlbumRepository
+import io.github.cfva14.musicapp.data.source.PlaylistDataSource
+import io.github.cfva14.musicapp.data.source.PlaylistRepository
 
 /**
  * Created by Carlos Valencia on 12/11/17.
@@ -13,6 +16,7 @@ class AlbumPresenter(
 
         private val albumId: String,
         private val albumRepository: AlbumRepository,
+        private val playlistRepository: PlaylistRepository,
         private val albumView: AlbumContract.View
 
 ) : AlbumContract.Presenter {
@@ -58,6 +62,34 @@ class AlbumPresenter(
             override fun onDataNotAvailable() {
                 with(albumView) {
                     showMissingTracks()
+                }
+            }
+        })
+    }
+
+    override fun getPlaylistsByUser(userId: String) {
+        playlistRepository.getPlaylistsByUser(userId, object : PlaylistDataSource.GetPlaylistsByUserCallBack {
+            override fun onPlaylistsLoaded(playlists: List<Playlist>) {
+                with(albumView) {
+                    showPlaylistsByUser(playlists)
+                }
+            }
+
+            override fun onDataNotAvailable() {}
+        })
+    }
+
+    override fun saveTrackToPlaylist(track: Track, playlistId: String) {
+        playlistRepository.saveTrackToPlaylist(track, playlistId, object : PlaylistDataSource.GetSaveTrackToPlaylistCallback {
+            override fun onTrackSaved(message: String) {
+                with(albumView) {
+                    showSaveTrackToPlaylistResult(message)
+                }
+            }
+
+            override fun onError(message: String) {
+                with(albumView) {
+                    showSaveTrackToPlaylistResult(message)
                 }
             }
         })

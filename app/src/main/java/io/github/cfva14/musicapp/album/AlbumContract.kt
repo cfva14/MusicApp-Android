@@ -3,6 +3,7 @@ package io.github.cfva14.musicapp.album
 import io.github.cfva14.musicapp.BasePresenter
 import io.github.cfva14.musicapp.BaseView
 import io.github.cfva14.musicapp.data.Album
+import io.github.cfva14.musicapp.data.Playlist
 import io.github.cfva14.musicapp.data.Track
 
 /**
@@ -16,11 +17,16 @@ interface AlbumContract {
         fun setLoadingIndicator(active: Boolean)
         fun showAlbum(album: Album)
         fun showTracks(tracks: List<Track>)
+        fun showPlaylistsByUser(playlists: List<Playlist>)
         fun showMissingAlbum()
         fun showMissingTracks()
+        fun showSaveTrackToPlaylistResult(message: String)
 
     }
 
-    interface Presenter : BasePresenter
+    interface Presenter : BasePresenter {
+        fun getPlaylistsByUser(userId: String)
+        fun saveTrackToPlaylist(track: Track, playlistId: String)
+    }
 
 }

@@ -1,11 +1,11 @@
 package io.github.cfva14.musicapp.home
 
 import android.os.Bundle
-import io.github.cfva14.musicapp.BaseActivity
+import io.github.cfva14.musicapp.PlayerActivity
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.utils.replaceFragmentInActivity
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : PlayerActivity() {
 
     private lateinit var homePresenter: HomePresenter
 

@@ -29,5 +29,4 @@ interface ArtistDataSource {
     fun getAlbums(artistId: String, callback: GetAlbumsCallback)
     fun getTracks(artistId: String, callback: GetTracksCallback)
 
-
 }

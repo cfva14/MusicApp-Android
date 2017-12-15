@@ -15,5 +15,9 @@
     <string name="add_to_playlist">Add to playlist</string>
     <string name="play_next">Play Next</string>
     <string name="play">Play</string>
+    
+    <!-- Dialog -->
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>

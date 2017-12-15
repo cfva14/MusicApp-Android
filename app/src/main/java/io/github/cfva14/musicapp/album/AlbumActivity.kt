@@ -1,12 +1,12 @@
 package io.github.cfva14.musicapp.album
 
 import android.os.Bundle
-import io.github.cfva14.musicapp.BaseActivity
+import io.github.cfva14.musicapp.PlayerActivity
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.utils.Injection
 import io.github.cfva14.musicapp.utils.replaceFragmentInActivity
 
-class AlbumActivity : BaseActivity() {
+class AlbumActivity : PlayerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class AlbumActivity : BaseActivity() {
             replaceFragmentInActivity(it, R.id.container)
         }
 
-        AlbumPresenter(albumId, Injection.provideAlbumRepository(), albumFragment)
+        AlbumPresenter(albumId, Injection.provideAlbumRepository(), Injection.providePlaylistRepository(), albumFragment)
     }
 
     companion object {

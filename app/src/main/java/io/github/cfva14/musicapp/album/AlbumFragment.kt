@@ -1,20 +1,20 @@
 package io.github.cfva14.musicapp.album
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import io.github.cfva14.musicapp.R
 import io.github.cfva14.musicapp.data.Album
+import io.github.cfva14.musicapp.data.Playlist
 import io.github.cfva14.musicapp.data.Track
 import io.github.cfva14.musicapp.utils.GenUtils
 import io.github.cfva14.musicapp.utils.GlideApp
@@ -95,12 +95,44 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
         recyclerTrack.adapter = trackAdapter
     }
 
+    override fun showPlaylistsByUser(playlists: List<Playlist>) {
+        val alertPlaylist = AlertDialog.Builder(context!!, R.style.DialogStyle)
+        alertPlaylist.setTitle(R.string.add_to_playlist)
+
+        val playlistAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_single_choice)
+        for (item in playlists) {
+            playlistAdapter.add(item.name)
+        }
+
+        var playlist = playlists[0]
+
+        alertPlaylist.setSingleChoiceItems(playlistAdapter, 0, DialogInterface.OnClickListener {
+            _, i ->  playlist = playlists[i]
+        })
+
+        alertPlaylist.setNegativeButton(R.string.cancel, {
+            dialogInterface, _ -> dialogInterface.dismiss()
+        })
+
+        alertPlaylist.setPositiveButton(R.string.ok, {
+            dialogInterface, _ ->
+            presenter.saveTrackToPlaylist(selectedTrack, playlist.id)
+            dialogInterface.dismiss()
+        })
+
+        alertPlaylist.show()
+    }
+
     override fun showMissingAlbum() {
         Toast.makeText(context, "No Album Found", Toast.LENGTH_SHORT).show()
     }
 
     override fun showMissingTracks() {
         Toast.makeText(context, "No Tracks Found", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showSaveTrackToPlaylistResult(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private class TrackAdapter(private val context: Context, private val tracks: List<Track>, private val itemListener: TrackItemListener) : RecyclerView.Adapter<TrackAdapter.TrackHolder>() {
@@ -148,7 +180,7 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
                 Toast.makeText(context, "Play ${selectedTrack.title} after current playing song", Toast.LENGTH_SHORT).show()
             }
             R.id.context_track_add_to_playlist -> {
-                Toast.makeText(context, "Add ${selectedTrack.title} to the playlist", Toast.LENGTH_SHORT).show()
+                presenter.getPlaylistsByUser("0cOv3qaAkpQxKRl06MxdT95QpOw2")
                 return true
             }
         }
