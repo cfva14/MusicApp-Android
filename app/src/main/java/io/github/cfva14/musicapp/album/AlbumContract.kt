@@ -20,13 +20,14 @@ interface AlbumContract {
         fun showPlaylistsByUser(playlists: List<Playlist>)
         fun showMissingAlbum()
         fun showMissingTracks()
-        fun showSaveTrackToPlaylistResult(message: String)
+        fun showResultMessage(message: String)
 
     }
 
     interface Presenter : BasePresenter {
         fun getPlaylistsByUser(userId: String)
         fun saveTrackToPlaylist(track: Track, playlistId: String)
+        fun createPlaylist(userId: String, name: String, isPrivate: Boolean, track: Track?)
     }
 
 }

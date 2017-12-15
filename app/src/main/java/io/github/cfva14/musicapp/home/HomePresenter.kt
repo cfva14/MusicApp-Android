@@ -21,6 +21,6 @@ class HomePresenter(
     }
 
     override fun openArtistUI(requestedArtist: Artist) {
-        homeView.showArtistUI("-KvmdhXYBaYk3RCvXRtZ")
+        homeView.showArtistUI("-KvnPk9G8kldpYI-JBRh")
     }
 }

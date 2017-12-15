@@ -104,9 +104,18 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
             playlistAdapter.add(item.name)
         }
 
-        var playlist = playlists[0]
+        var playlist = Playlist()
+        if (playlists.isNotEmpty()) {
+            playlist = playlists[0]
 
-        alertPlaylist.setSingleChoiceItems(playlistAdapter, 0, DialogInterface.OnClickListener {
+            alertPlaylist.setPositiveButton(R.string.save, {
+                dialogInterface, _ ->
+                presenter.saveTrackToPlaylist(selectedTrack, playlist.id)
+                dialogInterface.dismiss()
+            })
+        }
+
+        alertPlaylist.setSingleChoiceItems(playlistAdapter, 0, {
             _, i ->  playlist = playlists[i]
         })
 
@@ -114,10 +123,37 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
             dialogInterface, _ -> dialogInterface.dismiss()
         })
 
-        alertPlaylist.setPositiveButton(R.string.ok, {
+        alertPlaylist.setNeutralButton(R.string.create_new_playlist, {
             dialogInterface, _ ->
-            presenter.saveTrackToPlaylist(selectedTrack, playlist.id)
+            createNewPlaylist(selectedTrack)
             dialogInterface.dismiss()
+        })
+
+        alertPlaylist.show()
+    }
+
+    private fun createNewPlaylist(track: Track?) {
+        val alertPlaylist = AlertDialog.Builder(context!!, R.style.DialogStyle)
+        alertPlaylist.setTitle(R.string.create_new_playlist)
+
+        val dialogView = layoutInflater.inflate(R.layout.view_create_playlist, null)
+        alertPlaylist.setView(dialogView)
+
+        val editText = dialogView.findViewById<EditText>(R.id.playlist_name)
+        val checkBox = dialogView.findViewById<CheckBox>(R.id.private_checkbox)
+
+        alertPlaylist.setNegativeButton(R.string.cancel, {
+            dialogInterface, _ -> dialogInterface.dismiss()
+        })
+
+        alertPlaylist.setPositiveButton(R.string.save, {
+            dialogInterface, _ ->
+            if (editText.text.isEmpty()) {
+                editText.error = getString(R.string.error_playlist_name)
+            } else {
+                presenter.createPlaylist("0cOv3qaAkpQxKRl06MxdT95QpOw2", editText.text.toString(), checkBox.isChecked, track)
+                dialogInterface.dismiss()
+            }
         })
 
         alertPlaylist.show()
@@ -131,7 +167,7 @@ class AlbumFragment : Fragment(), AlbumContract.View, PopupMenu.OnMenuItemClickL
         Toast.makeText(context, "No Tracks Found", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showSaveTrackToPlaylistResult(message: String) {
+    override fun showResultMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 

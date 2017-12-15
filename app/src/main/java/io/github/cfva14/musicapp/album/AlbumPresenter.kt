@@ -80,16 +80,20 @@ class AlbumPresenter(
     }
 
     override fun saveTrackToPlaylist(track: Track, playlistId: String) {
-        playlistRepository.saveTrackToPlaylist(track, playlistId, object : PlaylistDataSource.GetSaveTrackToPlaylistCallback {
-            override fun onTrackSaved(message: String) {
+        playlistRepository.saveTrackToPlaylist(track, playlistId, object : PlaylistDataSource.GetResultCallback {
+            override fun onResult(message: String) {
                 with(albumView) {
-                    showSaveTrackToPlaylistResult(message)
+                    showResultMessage(message)
                 }
             }
+        })
+    }
 
-            override fun onError(message: String) {
+    override fun createPlaylist(userId: String, name: String, isPrivate: Boolean, track: Track?) {
+        playlistRepository.createPlaylist(userId, name, isPrivate, track, object : PlaylistDataSource.GetResultCallback {
+            override fun onResult(message: String) {
                 with(albumView) {
-                    showSaveTrackToPlaylistResult(message)
+                    showResultMessage(message)
                 }
             }
         })

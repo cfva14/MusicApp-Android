@@ -7,5 +7,6 @@ package io.github.cfva14.musicapp.data
 data class Playlist(
         val id: String = "",
         val userId: String = "",
-        val name: String = ""
+        val name: String = "",
+        val isPrivate: Boolean = false
 )

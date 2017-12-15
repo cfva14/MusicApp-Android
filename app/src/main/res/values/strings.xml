@@ -17,7 +17,11 @@
     <string name="play">Play</string>
     
     <!-- Dialog -->
-    <string name="ok">OK</string>
-    <string name="cancel">CANCEL</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="create_new_playlist">Create New Playlist</string>
+    <string name="make_private_playlist">Make private playlist</string>
+    <string name="playlist_name">Playlist name</string>
+    <string name="error_playlist_name">You need to provide a playlist name</string>
 
 </resources>

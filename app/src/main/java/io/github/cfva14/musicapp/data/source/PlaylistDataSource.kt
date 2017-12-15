@@ -19,13 +19,13 @@ interface PlaylistDataSource {
         fun onDataNotAvailable()
     }
 
-    interface GetSaveTrackToPlaylistCallback {
-        fun onTrackSaved(message: String)
-        fun onError(message: String)
+    interface GetResultCallback {
+        fun onResult(message: String)
     }
 
     fun getPlaylist(playlistId: String, callback: GetPlaylistCallback)
     fun getPlaylistsByUser(userId: String, callback: GetPlaylistsByUserCallBack)
-    fun saveTrackToPlaylist(track: Track, playlistId: String, callback: GetSaveTrackToPlaylistCallback)
+    fun saveTrackToPlaylist(track: Track, playlistId: String, callback: GetResultCallback)
+    fun createPlaylist(userId: String, name: String, isPrivate: Boolean, track: Track?, callback: GetResultCallback)
 
 }

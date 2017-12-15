@@ -35,14 +35,19 @@ class PlaylistRepository(
         })
     }
 
-    override fun saveTrackToPlaylist(track: Track, playlistId: String, callback: PlaylistDataSource.GetSaveTrackToPlaylistCallback) {
-        playlistRemoteDataSource.saveTrackToPlaylist(track, playlistId, object : PlaylistDataSource.GetSaveTrackToPlaylistCallback {
-            override fun onTrackSaved(message: String) {
-                callback.onTrackSaved(message)
+    override fun saveTrackToPlaylist(track: Track, playlistId: String, callback: PlaylistDataSource.GetResultCallback) {
+        playlistRemoteDataSource.saveTrackToPlaylist(track, playlistId, object : PlaylistDataSource.GetResultCallback {
+            override fun onResult(message: String) {
+                callback.onResult(message)
             }
 
-            override fun onError(message: String) {
-                callback.onError(message)
+        })
+    }
+
+    override fun createPlaylist(userId: String, name: String, isPrivate: Boolean, track: Track?, callback: PlaylistDataSource.GetResultCallback) {
+        playlistRemoteDataSource.createPlaylist(userId, name, isPrivate, track, object : PlaylistDataSource.GetResultCallback {
+            override fun onResult(message: String) {
+                callback.onResult(message)
             }
         })
     }
