@@ -3,19 +3,17 @@
 
     <item
         android:id="@+id/context_track_play"
-        android:checked="true"
-        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/play" />
 
     <item
         android:id="@+id/context_track_play_next"
-        android:checked="true"
-        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/play_next" />
 
     <item
+        android:id="@+id/context_track_add_to_queue"
+        android:title="@string/add_to_queue" />
+
+    <item
         android:id="@+id/context_track_add_to_playlist"
-        android:checked="true"
-        android:icon="@drawable/ic_launcher_foreground"
         android:title="@string/add_to_playlist" />
 </menu>

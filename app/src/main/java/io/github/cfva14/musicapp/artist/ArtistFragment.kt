@@ -97,7 +97,7 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
         for (track in tracks) {
             val trackLayout = layoutInflater.inflate(R.layout.list_item_track, trackHolder, false)
 
-            GlideApp.with(context).load(track.albumImageUrl).into(trackLayout.findViewById<ImageView>(R.id.item_track_image))
+            GlideApp.with(context).load(track.albumImageUrl).into(trackLayout.findViewById(R.id.item_track_image))
             trackLayout.findViewById<TextView>(R.id.item_track_album).text = track.albumName
             trackLayout.findViewById<TextView>(R.id.item_track_title).text = track.title
             trackLayout.findViewById<TextView>(R.id.item_track_duration).text = GenUtils.formatTimer(track.duration)
@@ -159,6 +159,10 @@ class ArtistFragment : Fragment(), ArtistContract.View, PopupMenu.OnMenuItemClic
             }
             R.id.context_track_play_next -> {
                 Toast.makeText(context, "Play ${selectedTrack.title} after current playing song", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.context_track_add_to_queue -> {
+                Toast.makeText(context, "Add ${selectedTrack.title} to current queue", Toast.LENGTH_SHORT).show()
                 return true
             }
             R.id.context_track_add_to_playlist -> {

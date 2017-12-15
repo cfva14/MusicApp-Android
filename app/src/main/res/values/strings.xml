@@ -15,6 +15,7 @@
     <string name="add_to_playlist">Add to playlist</string>
     <string name="play_next">Play Next</string>
     <string name="play">Play</string>
+    <string name="add_to_queue">Add to queue</string>
     
     <!-- Dialog -->
     <string name="save">Save</string>
