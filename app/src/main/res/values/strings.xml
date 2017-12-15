@@ -8,6 +8,9 @@
     <string name="open_content_drawer">Open</string>
     <string name="close_content_drawer">Close</string>
 
+    <!-- Tiles -->
+    <string name="more">More</string>
+
     <!-- Album -->
     <string name="play_all">Play All</string>
 

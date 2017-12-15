@@ -14,6 +14,8 @@ interface HomeContract {
 
         fun setLoadingIndicator(active: Boolean)
         fun showArtistUI(artistId: String)
+        fun showNearArtists(artist: List<Artist>)
+        fun showMissingNearArtists()
 
     }
 

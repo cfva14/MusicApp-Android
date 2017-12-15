@@ -3,6 +3,7 @@ package io.github.cfva14.musicapp.home
 import android.os.Bundle
 import io.github.cfva14.musicapp.PlayerActivity
 import io.github.cfva14.musicapp.R
+import io.github.cfva14.musicapp.utils.Injection
 import io.github.cfva14.musicapp.utils.replaceFragmentInActivity
 
 class HomeActivity : PlayerActivity() {
@@ -19,7 +20,7 @@ class HomeActivity : PlayerActivity() {
             replaceFragmentInActivity(it, R.id.container)
         }
 
-        homePresenter = HomePresenter(homeFragment)
+        homePresenter = HomePresenter(Injection.provideHomeRepository(), homeFragment)
 
     }
 }

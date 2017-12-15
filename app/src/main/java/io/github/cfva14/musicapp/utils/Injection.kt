@@ -2,9 +2,11 @@ package io.github.cfva14.musicapp.utils
 
 import io.github.cfva14.musicapp.data.source.AlbumRepository
 import io.github.cfva14.musicapp.data.source.ArtistRepository
+import io.github.cfva14.musicapp.data.source.HomeRepository
 import io.github.cfva14.musicapp.data.source.PlaylistRepository
 import io.github.cfva14.musicapp.data.source.remote.AlbumRemoteDataSource
 import io.github.cfva14.musicapp.data.source.remote.ArtistRemoteDataSource
+import io.github.cfva14.musicapp.data.source.remote.HomeRemoteDataSource
 import io.github.cfva14.musicapp.data.source.remote.PlaylistRemoteDataSource
 
 /**
@@ -23,6 +25,10 @@ object Injection {
 
     fun providePlaylistRepository() : PlaylistRepository {
         return PlaylistRepository.getInstance(PlaylistRemoteDataSource)
+    }
+
+    fun provideHomeRepository() : HomeRepository {
+        return HomeRepository.getInstance(HomeRemoteDataSource)
     }
 
 }
